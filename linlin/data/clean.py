@@ -4,8 +4,10 @@ import re
 import string
 import pandas as pd
 
-data_path = '/Users/linlin/Desktop/nus/cs5228/project/data/train.csv'
-out_path = '/Users/linlin/Desktop/nus/cs5228/project/data/processed/train.csv'
+train_path = '../../../data/train.csv'
+train_out_path = '../../../data/processed/train.csv'
+test_path = '../../../data/test.csv'
+test_out_path = '../../../data/processed/test.csv'
 emo_pos = [':-)', ':)', '(:', '(-:', '<3', ':-D', ': D', ' XD', ';-)',
            ';)', ';-D', '; D']
 emo_neg = [':-(', ':(', ': (', ':((', 'T_T', ' t_t', ' ><']
@@ -35,4 +37,5 @@ def run(inpath, outpath):
     data.to_csv(outpath, index=False)
 
 if __name__ == '__main__':
-    run(data_path, out_path)
+    #run(train_path, train_out_path)
+    run(test_path, test_out_path)
