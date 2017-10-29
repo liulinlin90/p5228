@@ -11,7 +11,10 @@ from sklearn.linear_model import LogisticRegression
 
 train_path = '../../../data/processed/train.csv'
 test_path = '../../../data/processed/test.csv'
-in_dir = '../../../data/stage1_nb/'
+in_dir = ['../../../data/stage1_nb/',
+        '../../../data/stage1a_nb/',
+        '../../../data/stage1_xg/']
+
 out_dir = '../../../data/stage2/'
 train_range = (0, 800000)
 
@@ -27,7 +30,10 @@ def load_stage1_result():
               }
     train = []
     test = []
-    for f in glob.glob(os.path.join(in_dir, filename.format(**fparam))):
+    all_file = []
+    for item in in_dir:
+        all_file += glob.glob(os.path.join(item, filename.format(**fparam)))
+    for f in all_file:
         result = []
         print 'loading file %s' % f
         with open(f) as inf:
@@ -57,8 +63,8 @@ def run_model(train, val, test, train_full):
     train_y = train['positive']
     #model = LogisticRegression()
     #model = RandomForestClassifier()
-    model = GaussianNB()
-    #model = XGBClassifier()
+    #model = GaussianNB()
+    model = XGBClassifier()
     print 'training model ...'
     model.fit(train_x, train_y)
     val_x = train_x[-1000:]
