@@ -43,6 +43,8 @@ def build_design_matrix_phrase(data, word_stat_file, p_len, word_range=(0,1000))
         tweet = get_phrase(tweet, p_len)
         freq = {}
         for wd in tweet:
+            if wd not in words:
+                continue
             if wd not in freq:
                 freq[wd] = 1
             else:
