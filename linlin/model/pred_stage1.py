@@ -14,7 +14,7 @@ out_dir = '../../../data/stage1/'
 word_stat = './word_stat.txt'
 word_stat2 = './word_stat2.txt'
 word_stat3 = './word_stat3.txt'
-train_range = (0, 200000)
+train_range = (0, 800000)
 
 def get_words(inpath):
     result = []
@@ -150,16 +150,16 @@ def run(train_p, test_p):
     train = data[train_range[0]:train_range[1]]
     val = data[-1000:]
     test = pd.read_csv(test_p, sep=',')
+    for p1num in gen_tuples(5000, 500):
+        p2num, p3num = None, None
+        run_model(train, val, test, data, p1num, p2num, p3num)
+
     for p2num in gen_tuples(1000, 500):
         p1num, p3num = None, None
         run_model(train, val, test, data, p1num, p2num, p3num)
 
     for p3num in gen_tuples(300, 100):
         p1num, p2num = None, None
-        run_model(train, val, test, data, p1num, p2num, p3num)
-
-    for p1num in gen_tuples(4000, 500):
-        p2num, p3num = None, None
         run_model(train, val, test, data, p1num, p2num, p3num)
 
 if __name__ == '__main__':
