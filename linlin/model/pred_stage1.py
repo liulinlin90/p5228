@@ -3,6 +3,7 @@ import os
 
 import pandas as pd
 import numpy as np
+from xgboost import XGBClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
@@ -114,7 +115,7 @@ def output_pred_result(x, model, p1num, p2num, p3num, ftype, wmod):
 def run_model(train, val, test, train_full, p1num, p2num, p3num):
     train_x = build_design_matrix(train['tweet'], p1num, p2num, p3num)
     train_y = train['positive']
-    model = GaussianNB()
+    model = XGBClassifier()
     print 'training model ...'
     model.fit(train_x, train_y)
     val_x = build_design_matrix(val['tweet'], p1num, p2num, p3num)
