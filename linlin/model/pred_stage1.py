@@ -125,6 +125,7 @@ def run_model(train, val, test, train_full, p1num, p2num, p3num):
     del val_y
     test_x = build_design_matrix(test['tweet'], p1num, p2num, p3num)
     output_pred_result(test_x, model, p1num, p2num, p3num, 'test')
+    del test_x
     train_full_x = build_design_matrix(train_full['tweet'], p1num, p2num, p3num)
     output_pred_result(train_full_x, model, p1num, p2num, p3num, 'train')
 
