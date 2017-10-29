@@ -14,7 +14,7 @@ out_dir = '../../../data/stage1/'
 word_stat = './word_stat.txt'
 word_stat2 = './word_stat2.txt'
 word_stat3 = './word_stat3.txt'
-train_range = (0, 20000)
+train_range = (0, 50000)
 
 def get_words(inpath):
     result = []
