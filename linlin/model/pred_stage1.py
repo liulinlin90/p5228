@@ -151,11 +151,11 @@ def run(train_p, test_p):
     train = data[train_range[0]:train_range[1]]
     val = data[-1000:]
     test = pd.read_csv(test_p, sep=',')
-    for p1num in gen_tuples(5000, 400):
+    for p1num in gen_tuples(5000, 500):
         p2num, p3num = None, None
         run_model(train, val, test, data, p1num, p2num, p3num)
 
-    for p2num in gen_tuples(1000, 400):
+    for p2num in gen_tuples(1000, 500):
         p1num, p3num = None, None
         run_model(train, val, test, data, p1num, p2num, p3num)
 
