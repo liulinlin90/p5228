@@ -119,6 +119,10 @@ def run_model(train, val, test, train_full, p1num, p2num, p3num):
     val_y = val['positive']
     pred = model.predict(val_x)
     print get_accuracy(pred, val_y), p1num, p2num, p3num
+    del train_x
+    del train_y
+    del val_x
+    del val_y
     test_x = build_design_matrix(test['tweet'], p1num, p2num, p3num)
     output_pred_result(test_x, model, p1num, p2num, p3num, 'test')
     train_full_x = build_design_matrix(train_full['tweet'], p1num, p2num, p3num)
