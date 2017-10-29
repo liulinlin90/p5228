@@ -92,7 +92,7 @@ def gen_tuples(max_val, tp_len):
     return result
 
 
-def output_pred_result(x, model, p1num, p2num, p3num, ftype):
+def output_pred_result(x, model, p1num, p2num, p3num, ftype, wmod):
     filename = '{ftype}_{train_start}-{train_end}_{p1start}-{p1end}_{p2start}-{p2end}_{p3start}-{p3end}.csv'
     fparam = {'ftype' : ftype,
               'train_start': train_range[0],
@@ -106,7 +106,7 @@ def output_pred_result(x, model, p1num, p2num, p3num, ftype):
               }
     pred_file = os.path.join(out_dir, filename.format(**fparam))
     print 'writing prediction file %s' % pred_file
-    with open(pred_file, 'w') as outf:
+    with open(pred_file, wmod) as outf:
         for p in model.predict(x):
             print >> outf, str(p)
 
@@ -125,11 +125,24 @@ def run_model(train, val, test, train_full, p1num, p2num, p3num):
     del train_y
     del val_x
     del val_y
-    test_x = build_design_matrix(test['tweet'], p1num, p2num, p3num)
-    output_pred_result(test_x, model, p1num, p2num, p3num, 'test')
-    del test_x
-    train_full_x = build_design_matrix(train_full['tweet'], p1num, p2num, p3num)
-    output_pred_result(train_full_x, model, p1num, p2num, p3num, 'train')
+    for drange in gen_tuples(200000, 10000):
+        dstart, dend = drange
+        print 'predict range %d to %d ...' % (dstart, dend)
+        test_x = build_design_matrix(test[dstart:dend]['tweet'], p1num, p2num, p3num)
+        if dstart == 0:
+            wmod='w'
+        else:
+            wmod='a'
+        output_pred_result(test_x, model, p1num, p2num, p3num, 'test', wmod)
+    for drange in gen_tuples(800000, 10000):
+        dstart, dend = drange
+        print 'predict range %d to %d ...' % (dstart, dend)
+        train_full_x = build_design_matrix(train_full[dstart:dend]['tweet'], p1num, p2num, p3num)
+        if dstart == 0:
+            wmod='w'
+        else:
+            wmod='a'
+        output_pred_result(train_full_x, model, p1num, p2num, p3num, 'train', wmod)
 
 
 def run(train_p, test_p):
