@@ -11,9 +11,19 @@ from sklearn.linear_model import LogisticRegression
 
 train_path = '../../../data/processed/train.csv'
 test_path = '../../../data/processed/test.csv'
-in_dir = ['../../../data/stage1_nb/',
-        '../../../data/stage1a_nb/',
-        '../../../data/stage1_xg/']
+in_dir = ['../../../data/stage1_rnn/',
+        '../../../data/stage1_rnn2/',
+        '../../../data/stage1_rnn3/',
+        '../../../data/stage1_rnn4/',
+        '../../../data/stage1_rnn5/',
+        '../../../data/stage1_rnn6/',
+        '../../../data/stage1_rnn7/',
+        '../../../data/stage1_rnn8/',
+        '../../../data/stage1_sgd/',
+        '../../../data/stage1_x/',
+        '../../../data/stage1_ensamble',
+        ]
+
 
 out_dir = '../../../data/stage2/'
 train_range = (0, 800000)
@@ -23,10 +33,8 @@ def get_accuracy(pred, true_value):
 
 
 def load_stage1_result():
-    filename = '{ftype}_{train_start}-{train_end}_*.csv'
+    filename = '{ftype}_*.csv'
     fparam = {'ftype' : 'train',
-              'train_start': train_range[0],
-              'train_end': train_range[1],
               }
     train = []
     test = []
@@ -61,13 +69,13 @@ def output_pred_result(x, model, ftype):
 def run_model(train, val, test, train_full):
     train_x, test_x = load_stage1_result()
     train_y = train['positive']
-    #model = LogisticRegression()
+    model = LogisticRegression()
     #model = RandomForestClassifier()
     #model = GaussianNB()
-    model = XGBClassifier()
+    #model = XGBClassifier()
     print 'training model ...'
-    model.fit(train_x, train_y)
-    val_x = train_x[-1000:]
+    model.fit(train_x[:600000], train_y[:600000])
+    val_x = train_x[-100000:]
     val_y = val['positive']
     pred = model.predict(val_x)
     print get_accuracy(pred, val_y)
@@ -77,7 +85,7 @@ def run_model(train, val, test, train_full):
 def run(train_p, test_p):
     data = pd.read_csv(train_p, sep=',')
     train = data[train_range[0]:train_range[1]]
-    val = data[-1000:]
+    val = data[-100000:]
     test = pd.read_csv(test_p, sep=',')
     run_model(train, val, test, data)
 
